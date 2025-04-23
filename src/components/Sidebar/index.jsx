@@ -10,7 +10,7 @@ export default function Sidebar() {
   };
 
   return (
-    <aside className="w-64 bg-gradient-to-b from-blue-600 to-blue-500 text-white p-6 shadow-lg flex flex-col">
+    <aside className="w-64 bg-gradient-to-b from-gray-600 to-gray-900 text-white p-6 shadow-lg flex flex-col">
       <h2 className="text-3xl font-bold mb-8 text-center">Casa Livre</h2>
 
       <nav className="flex flex-col gap-4">
@@ -48,7 +48,7 @@ export default function Sidebar() {
       </nav>
 
       <button
-        className="mt-auto p-3 text-red-500 hover:bg-red-100 rounded-lg transition-colors duration-200"
+        className="mt-auto p-3 text-white bg-red-500 rounded-lg cursor-pointer"
         onClick={handleLogout}
       >
         Sair

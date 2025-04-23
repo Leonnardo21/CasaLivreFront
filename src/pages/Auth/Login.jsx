@@ -1,6 +1,6 @@
 import { useState } from "react";
 import api from "../../services/api";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -37,6 +37,7 @@ export default function Login() {
         <h1 className="text-2xl font-bold mb-6 text-center">Casa Livre</h1>
 
         {error && <p className="text-red-600 mb-4 text-sm text-center">{error}</p>}
+        
         <div className="mb-4">
           <label className="block text-sm font-medium mb-1">Email</label>
           <input 
@@ -62,6 +63,13 @@ export default function Login() {
           className="w-full mt-2 bg-green-600 text-white py-2 rounded-xl hover:bg-green-700 transition cursor-pointer">
           Entrar
         </button>
+
+        <p className="text-center text-sm mt-4">
+                    Não tem uma conta?{" "}
+                    <Link to="/register" className="text-blue-600 hover:underline">
+                        Cadastre-se
+                    </Link>
+                </p>
       </form>
     </div>
   );

@@ -7,6 +7,7 @@ export default function Users() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isCreating, setIsCreating] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -46,26 +47,26 @@ const handleDelete = async (id) => {
   }
 }
   
-const handleUpdateUser = async () => {
-  try {
-    const response = await api.put(`users/${selectedUser.id}`, {
+const handleSaveUser = async () => {
+ try{
+  if(isCreating){
+    await api.post("users", {
       name,
       email,
     });
-
-    // Verifica se a resposta realmente foi um sucesso
-    if (response.status >= 200 && response.status < 300) {
-      setIsModalOpen(false);
-      fetchUsers();
-    } else {
-      console.error("Resposta inesperada:", response);
-      alert("Resposta inesperada ao atualizar usuário");
-    }
-  } catch (err) {
-    // Mostra erro mais detalhado no console
-    console.error("Erro no update:", err.response || err.message);
-    alert("Erro ao atualizar usuário");
+  }else{
+    await api.put(`users/${selectedUser.id}`, {
+      name,
+      email,
+    });
   }
+  setIsModalOpen(false);
+  setIsCreating(false);
+  fetchUsers();
+ }catch(err){
+  console.error("Erro: ", err)
+  alert("Erro ao salvar usuário");
+ }
 }
   
   if (loading) return <div className="text-center text-gray-500">Carregando usuários...</div>;
@@ -76,39 +77,53 @@ const handleUpdateUser = async () => {
   
   return (
     <div className="overflow-x-auto shadow-md rounded-lg border border-gray-200 bg-white">
-    <h2 className="text-2xl font-semibold mb-6 text-gray-800 text-center">Usuários Cadastrados</h2>
+      <h2 className="text-2xl font-semibold mb-6 text-gray-800 text-center">Usuários Cadastrados</h2>
+      <div className="flex justify-start px-6 mt-4 mb-4">
+        <button 
+          className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors duration-200 cursor-pointer"
+          onClick={() => {
+            setSelectedUser(null);
+            setName("");
+            setEmail("");
+            setIsCreating(true);
+            setIsModalOpen(true);
+          }}
+        >
+          Novo usuário
+        </button>
+      </div>
     <table className="min-w-full text-sm text-left text-gray-700">
-    <thead>
-    <tr className="bg-gray-100 border-b">
-    <th className="px-6 py-4 font-medium text-gray-600">ID</th>
-    <th className="px-6 py-4 font-medium text-gray-600">Nome</th>
-    <th className="px-6 py-4 font-medium text-gray-600">Email</th>
-    <th className="px-6 py-4 font-medium text-gray-600">Ações</th>
-    </tr>
-    </thead>
-    <tbody>
-    {users.map((user) => (
-      <tr key={user.id} className="border-b hover:bg-gray-50">
-      <td className="px-6 py-4">{user.id}</td>
-      <td className="px-6 py-4">{user.name}</td>
-      <td className="px-6 py-4">{user.email}</td>
-      <td className="px-6 py-4 text-blue-500 hover:text-blue-700 cursor-pointer">
-      <button
-      className="bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-700 focus:outline-none transition-colors duration-200 mr-2"
-      onClick={() => handleEdit(user)}
-      >
-      <FaEdit size={20} />
-      </button>
-      <button
-      className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-700 focus:outline-none transition-colors duration-200"
-      onClick={() => handleDelete(user.id)}
-      >
-      <FaTrashAlt size={20} />
-      </button>
-      </td>
-      </tr>
-    ))}
-    </tbody>
+      <thead>
+        <tr className="bg-gray-100 border-b">
+          <th className="px-6 py-4 font-medium text-gray-600">ID</th>
+          <th className="px-6 py-4 font-medium text-gray-600">Nome</th>
+          <th className="px-6 py-4 font-medium text-gray-600">Email</th>
+          <th className="px-6 py-4 font-medium text-gray-600">Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+      {users.map((user) => (
+        <tr key={user.id} className="border-b hover:bg-gray-50">
+          <td className="px-6 py-4">{user.id}</td>
+          <td className="px-6 py-4">{user.name}</td>
+          <td className="px-6 py-4">{user.email}</td>
+          <td className="px-6 py-4">
+            <button
+            className="bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-700 focus:outline-none transition-colors duration-200 mr-2 cursor-pointer"
+            onClick={() => handleEdit(user)}
+            >
+            <FaEdit size={20} />
+            </button>
+            <button
+            className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-700 focus:outline-none transition-colors duration-200 cursor-pointer"
+            onClick={() => handleDelete(user.id)}
+            >
+            <FaTrashAlt size={20} />
+            </button>
+          </td>
+        </tr>
+      ))}
+      </tbody>
     </table>
     
     {isModalOpen && (
@@ -142,7 +157,7 @@ const handleUpdateUser = async () => {
               </button>
               <button
                 className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
-                onClick={handleUpdateUser}
+                onClick={handleSaveUser}
               >
                 Salvar
               </button>
