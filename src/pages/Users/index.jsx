@@ -77,7 +77,7 @@ const handleSaveUser = async () => {
   
   return (
     <div className="overflow-x-auto shadow-md rounded-lg border border-gray-200 bg-white">
-      <h2 className="text-2xl font-semibold mb-6 text-gray-800 text-center">Usuários Cadastrados</h2>
+      <h2 className="text-2xl font-semibold mb-6 mt-6 text-gray-800 text-center">Usuários Cadastrados</h2>
       <div className="flex justify-start px-6 mt-4 mb-4">
         <button 
           className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors duration-200 cursor-pointer"

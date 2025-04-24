@@ -74,7 +74,7 @@ export default function Property(){
             fetchProperties();
         }catch(err){
             console.error("Erro:", err);
-            alert("Erro ao salvar usuário");
+            alert("Erro ao salvar propriedade");
         }
     }
 
@@ -85,7 +85,7 @@ export default function Property(){
 
     return(
         <div className="overlfow-x-auto shadow-md rounded-lg border border-gray-200 bg-white">
-            <h2 className="text-2xl font-semibold mb-6 text-gray-800 text-center">Propriedades cadastradas</h2>
+            <h2 className="text-2xl font-semibold mb-6 mt-6 text-gray-800 text-center">Propriedades cadastradas</h2>
             <div className="flex justify-start px-6 mt-4 mb-4">
                 <button 
                     className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors duration-200 cursor-pointer"
@@ -117,12 +117,12 @@ export default function Property(){
                 </thead>
                 <tbody>
                     {properties.map((property) => (
-                        <tr className="border-b hover:bg-gray-50">
+                        <tr key={property.id} className="border-b hover:bg-gray-50 text-center">
                             <td className="px-6 py-4">{property.id}</td>
                             <td className="px-6 py-4">{property.title}</td>
                             <td className="px-6 py-4">{property.description}</td>
                             <td className="px-6 py-4">{property.address}</td>
-                            <td className="px-6 py-4">{property.pricePerNight}</td>
+                            <td className="px-6 py-4 text-green-400 font-bold text-lg">R$ {property.pricePerNight}</td>
                             <td className="px-6 py-4">{property.ownerId}</td>
                             <td className="px-6 py-4">
                                 <button 
